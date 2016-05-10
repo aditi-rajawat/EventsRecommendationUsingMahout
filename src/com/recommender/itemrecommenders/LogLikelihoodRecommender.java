@@ -17,20 +17,27 @@ import java.util.Map;
  */
 public class LogLikelihoodRecommender {
 
-    public static Map<Long, List<RecommendedItem>> createRecommendations(List<Long> itemIds) throws Exception{
+    public static Map<Long, List<RecommendedItem>> createRecommendations(List<Long> itemIds, int dataChoice) throws Exception{
 
         Map<Long, List<RecommendedItem>> map = new HashMap<Long, List<RecommendedItem>>();
+        File file = null;
 
-        File file = new File("/user/user01/EventsRecommendationProject/out/data/usereventpreferences/part-r-00000");
-        DataModel dataModel = new FileDataModel(file);
+        if(dataChoice == 1)
+            file = new File("/user/user01/EventsRecommendationProject/out/data/usereventpreferences/part-r-00000");
+        else if(dataChoice == 2)
+            file = new File("/user/user01/EventsRecommendationProject/out/data/usereventattended/part-r-00000");
 
-        ItemSimilarity similarity = new LogLikelihoodSimilarity(dataModel);
+        if(file != null){
+            DataModel dataModel = new FileDataModel(file);
 
-        GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(dataModel, similarity);
+            ItemSimilarity similarity = new LogLikelihoodSimilarity(dataModel);
 
-        for(Long eachItemId: itemIds){
-            List<RecommendedItem> recommendations = recommender.mostSimilarItems(eachItemId.longValue(), 5);
-            map.put(eachItemId, recommendations);
+            GenericItemBasedRecommender recommender = new GenericItemBasedRecommender(dataModel, similarity);
+
+            for(Long eachItemId: itemIds){
+                List<RecommendedItem> recommendations = recommender.mostSimilarItems(eachItemId.longValue(), 5);
+                map.put(eachItemId, recommendations);
+            }
         }
         return map;
     }

@@ -17,7 +17,7 @@ public class UsersRecentHistoryDriver extends Configured implements Tool {
 
     @Override
     public int run(String[] strings) throws Exception {
-        System.out.println(" Users recent history Driver class invoked..");
+        System.out.println("UsersRecentHistoryDriver class invoked..");
         System.out.println("Input data file path -- > "+ strings[0]);
         System.out.println("Output data file path ---> "+ strings[1]);
 
