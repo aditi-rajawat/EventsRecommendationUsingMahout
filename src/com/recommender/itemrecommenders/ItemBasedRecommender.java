@@ -32,7 +32,7 @@ public class ItemBasedRecommender {
         Map<Long, List<RecommendedItem>> map = new HashMap<>();
         FileReader fileReader = null;
 
-        if(dataChoice == 1)
+        if(dataChoice == 1 || dataChoice == 3)
             fileReader = new FileReader(new File("/user/user01/EventsRecommendationProject/out/data/usershistory/part-r-00000"));
         else if(dataChoice == 2)
             fileReader = new FileReader(new File("/user/user01/EventsRecommendationProject/out/data/usersattendedhistory/part-r-00000"));
@@ -58,19 +58,22 @@ public class ItemBasedRecommender {
             else if(similarityMetric == 2){
                 map = LogLikelihoodRecommender.createRecommendations(itemIds, dataChoice);
             }
+            else if(similarityMetric == 3){
+                map = PearsonCorrelationRecommender.createRecommendations(itemIds, dataChoice);
+            }
 
             if(!map.isEmpty()){
                 Set<Long> keys = map.keySet();
                 if(keys.size()>0){
-                    System.out.println("************************* RECOMMENDATIONS ****************************\n");
+                    System.out.println("******************************* RECOMMENDATIONS *******************************\n");
                     for(Long itemId: keys){
                         List<RecommendedItem> recommendations = map.get(itemId);
-                        System.out.println("******************************************************************\n");
+                        System.out.println("***************************************************************************\n");
                         System.out.println("Since you showed interest in the EVENT "+ itemId + ", you may also like:\n");
                         for(RecommendedItem eachReco : recommendations){
                             System.out.println("Event ID  :  "+ eachReco.getItemID() + " , Similarity Value  :  "+ eachReco.getValue());
                         }
-                        System.out.println("******************************************************************\n");
+                        System.out.println("***************************************************************************\n");
                     }
                 }
             }
